@@ -146,7 +146,11 @@ class BookSortDetail extends Component {
                     />
                 ):(
                     <ScrollableTabView
-                        renderTabBar={() => <DefaultTabBar/>}>
+                        renderTabBar={() => <DefaultTabBar/>}
+                        tabBarUnderlineStyle={{backgroundColor:'#1B89EB'}}
+                        tabBarActiveTextColor='#1B89EB'
+                        tabBarTextStyle={{fontSize: 16}}
+                    >
                         <View tabLabel='热门'>
                             <FlatList
                                 initialNumToRender = {20}
@@ -199,6 +203,7 @@ class BookSortDetail extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor:'#fff'
     },
     itemImage:{
         marginLeft: 14,

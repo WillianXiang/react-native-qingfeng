@@ -150,7 +150,107 @@ class Read extends Component {
     }
 
     _formatContent = (content) =>{
-        return _content = '\u3000\u3000' + content.trim().replace(/\n/g, '\n\u3000\u3000');
+        let _content = '\u3000\u3000' + content.trim().replace(/\n/g, '\n\u3000\u3000');
+
+            const length = _content.length;
+            var array = [];
+            let x = 0,y,m = 0;
+            while (x < length) {
+                let _array = [];
+                for (let i = 0; i <= 16; i++) {
+                    let str_spa = _content.substring(x, x + 1);
+                    let str_sto = _content.substring(x, x + 18);
+                    const re = /^\s+$/
+                    if (str_sto.indexOf('”') != -1) {
+                        y = x + str_sto.indexOf('”') + 1;
+                        _array[i] = _content.substring(x, y);
+                        x = y;
+                        continue;
+                    }
+                    else if (str_sto.indexOf('。') != -1 ) {
+                        y = x + str_sto.indexOf('。') + 1;
+                        if (re.exec(_content.substring(y, y + 1))) {
+                            y = x + str_sto.indexOf('。') + 1;
+                            _array[i] = _content.substring(x, y);
+                            x = y;
+                            continue;
+                        }
+                        else {
+                            if (str_sto.indexOf('！') != -1) {
+                                y = x + str_sto.indexOf('！') + 1;
+                                _array[i] = _content.substring(x, y);
+                                x = y;
+                                continue;
+                            }
+                            else {
+                                y = x + 18;
+                                _array[i] = _content.substring(x, y);
+                                x = y;
+                                continue;
+                            }
+                        }
+                    }
+                    else if (str_sto.indexOf('！') != -1) {
+                        y = x + str_sto.indexOf('！') + 1;
+                        if (re.exec(_content.substring(y, y + 1))) {
+                            y = x + str_sto.indexOf('！') + 1;
+                            _array[i] = _content.substring(x, y);
+                            x = y;
+                            continue;
+                        }
+                        else {
+                            y = x + 18;
+                            _array[i] = _content.substring(x, y);
+                            x = y;
+                            continue;
+                        }
+                    }
+                    else if (str_sto.indexOf('？') != -1){
+                        y = x + str_sto.indexOf('？') + 1;
+                        if (re.exec(_content.substring(y, y + 1))) {
+                            y = x + str_sto.indexOf('？') + 1;
+                            _array[i] = _content.substring(x, y);
+                            x = y;
+                            continue;
+                        }
+                        else {
+                            y = x + 18;
+                            _array[i] = _content.substring(x, y);
+                            x = y;
+                            continue;
+                        }
+                    }
+                    else if (re.exec(str_spa)) {
+                        y = x + 24;
+                        if (_content.substring(x,y).indexOf('。') != -1) {
+                            y = x + _content.substring(x,y).indexOf('。') + 1;
+                            _array[i] = _content.substring(x, y);
+                            x = y;
+                            continue
+                        }
+                        _array[i] = _content.substring(x, y);
+                        x = y;
+                        continue;
+                    }
+                    else {
+                        y = x + 18
+                        _array[i] = _content.substring(x, y);
+                        x = y;
+                    }
+                }
+                array[m] = _array;
+                m++
+            }
+            // console.log((m - 1) * 375);
+            // return array
+        return (
+            array.map((rowData,index)=>{
+                return (
+                    rowData
+                );
+            })
+        );
+
     };
 
     handleScroll(e) {
@@ -251,7 +351,7 @@ class Read extends Component {
                                         {this.props.loadReadState?(
                                             <Loading/>
                                         ):(
-                                            <Text style={{fontSize:this.state.textFontSize,color:this.state.textColor,lineHeight:this.state.textFontSize+22,marginLeft:15,marginRight:10,fontFamily:'notoserif'}}>
+                                            <Text style={{fontSize:this.state.textFontSize,color:this.state.textColor,lineHeight:this.state.textFontSize+22,marginLeft:15,marginRight:10}}>
                                                 {this._formatContent(this.props.chapter.body)}
                                             </Text>
                                         )}

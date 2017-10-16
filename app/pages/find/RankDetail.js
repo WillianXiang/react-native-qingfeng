@@ -107,7 +107,11 @@ class RankDetail extends Component {
             <View style={styles.container}>
                 {typeof(this.props.monthRankDetailList)!== 'undefined'?(
                     <ScrollableTabView
-                        renderTabBar={() => <DefaultTabBar/>}>
+                        renderTabBar={() => <DefaultTabBar/>}
+                        tabBarUnderlineStyle={{backgroundColor:'#1B89EB'}}
+                        tabBarActiveTextColor='#1B89EB'
+                        tabBarTextStyle={{fontSize: 16}}
+                    >
                         <View tabLabel='周榜'>
                             {this.renderRank(1)}
                         </View>

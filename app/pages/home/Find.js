@@ -188,10 +188,10 @@ class Find extends Component {
                         <Text style={styles.rankItemText}>潜 力 榜</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>this.toRankDetail(2)} style={[styles.rankItem,{backgroundColor:'#2586F1'}]}>
-                        <Text style={styles.rankItemText}>完 结 榜</Text>
+                        <Text style={styles.rankItemText}>留 存 榜</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>this.toRankDetail(3)} style={[styles.rankItem,{backgroundColor:'#2586F1'}]}>
-                        <Text style={styles.rankItemText}>留 存 榜</Text>
+                        <Text style={styles.rankItemText}>完 结 榜</Text>
                     </TouchableOpacity>
                 </View>
             </View>

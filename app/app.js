@@ -12,6 +12,7 @@ import {
     ScrollView,
     Button,
     Text,
+    Platform,
 } from 'react-native';
 
 import {
@@ -53,12 +54,18 @@ const HomeTabs = TabNavigator({
     tabBarOptions:{
         style: {
             backgroundColor: '#1B89EB',
+            height:Platform.OS == "ios"?49:56,
         },
         labelStyle: {
             fontSize: 16,
         },
-        // activeTintColor: '#1B89EB',
+        activeTintColor: '#fff',
         // activeBackgroundColor:'#fff',
+        inactiveTintColor:'#000',
+        // inactiveBackgroundColor:'#1B89EB',
+        // indicatorStyle: {
+        //     height: 0  // 如TabBar下面显示有一条线，可以设高度为0后隐藏
+        // },
     }
 });
 
@@ -68,7 +75,7 @@ const AppNavigator = StackNavigator({
             // StackNavigator 属性部分
 
             // title:'Test1', 同步设置导航和tabbar文字,不推荐使用
-            // headerTitle:'识兔', // 只会设置导航栏文字,
+            // headerTitle:'', // 只会设置导航栏文字,
                 header:null, // 可以自定义导航条内容，如果需要隐藏可以设置为null
                 // headerBackTitle:null, // 设置跳转页面左侧返回箭头后面的文字，默认是上一个页面的标题。可以自定义，也可以设置为null
                 // headerTruncatedBackTitle:'', // 设置当上个页面标题不符合返回箭头后的文字时，默认改成"返回"。
@@ -80,12 +87,11 @@ const AppNavigator = StackNavigator({
             // headerStyle:{
             //     backgroundColor:'#1B89EB',
             // }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
-            headerTitleStyle:{
-                fontSize:30,
-                    color:'white'
-            }, // 设置导航条文字样式。安卓上如果要设置文字居中，只要添加alignSelf:'center'就可以了
+            // headerTitleStyle:{
+            //     fontSize:55,
+            // }, // 设置导航条文字样式。安卓上如果要设置文字居中，只要添加alignSelf:'center'就可以了
             // headerBackTitleStyle:{}, // 设置导航条返回文字样式。
-            // headerTintColor:'green', // 设置导航栏文字颜色。总感觉和上面重叠了。
+            // headerTintColor:'#000', // 设置导航栏文字颜色。总感觉和上面重叠了。
             gesturesEnabled:true, // 是否支持滑动返回收拾，iOS默认支持，安卓默认关闭
             swipeEnabled:true,
             animationEnabled:true,
@@ -101,7 +107,7 @@ const AppNavigator = StackNavigator({
             //         />
             //     )
             // }), // 设置标签栏的图标。需要单独设置。
-                //tabBarLabel:'识兔', // 设置标签栏的title。推荐这个方式。
+                //tabBarLabel:'', // 设置标签栏的title。推荐这个方式。
         })},
     Rank:{screen:Rank,
         navigationOptions:({navigation,screenProps}) => ({
@@ -110,9 +116,11 @@ const AppNavigator = StackNavigator({
                 backgroundColor:'#1B89EB',
 
             }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+            headerBackTitle:null,
             headerTitleStyle:{
                 alignItems:'center',
-                justifyContent:'center'
+                justifyContent:'center',
+                color:'#fff'
             }
         })},
     RankDetail:{screen:RankDetail,
@@ -120,47 +128,62 @@ const AppNavigator = StackNavigator({
             headerStyle:{
                 backgroundColor:'#1B89EB',
             }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+            headerBackTitle:null,
+            headerTintColor:'#fff',
         })},
     BookGroup:{screen:BookGroup,
         navigationOptions:({navigation,screenProps}) => ({
             headerStyle:{
                 backgroundColor:'#1B89EB',
             }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+            headerBackTitle:null,
+            headerTintColor:'#fff',
         })},
     BookGroupDetail:{screen:BookGroupDetail,
         navigationOptions:({navigation,screenProps}) => ({
             headerStyle:{
                 backgroundColor:'#1B89EB',
             }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+            headerBackTitle:null,
+            headerTintColor:'#fff',
         })},
     BookSortDetail:{screen:BookSortDetail,
         navigationOptions:({navigation,screenProps}) => ({
             headerStyle:{
                 backgroundColor:'#1B89EB',
             }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+            headerBackTitle:null,
+            headerTintColor:'#fff',
         })},
     BookSearch:{screen:BookSearch,
         navigationOptions:({navigation,screenProps}) => ({
             headerStyle:{
                 backgroundColor:'#1B89EB',
             }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+            headerBackTitle:null,
+            headerTintColor:'#fff',
         })},
     BookSearchResult:{screen:BookSearchResult,
         navigationOptions:({navigation,screenProps}) => ({
             headerStyle:{
                 backgroundColor:'#1B89EB',
             }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+            headerBackTitle:null,
+            headerTintColor:'#fff',
         })},
     BookInfo:{screen:BookInfo,
         navigationOptions:({navigation,screenProps}) => ({
             headerStyle:{
                 backgroundColor:'#1B89EB',
             }, // 设置导航条的样式。如果想去掉安卓导航条底部阴影可以添加elevation: 0,iOS去掉阴影是。
+            headerBackTitle:null,
+            headerTintColor:'#fff',
         })},
     Read: {
         screen: Read,
         navigationOptions: ({navigation, screenProps}) => ({
             header:null,
+            headerTintColor:'#fff',
         })
     }}, {
     initialRouteName: 'Home', // 默认显示界面
