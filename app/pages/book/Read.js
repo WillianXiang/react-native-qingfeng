@@ -96,7 +96,7 @@ class Read extends Component {
         let setting = realm.objectForPrimaryKey('SystemSetting', 1);
         if(setting){
             if(setting.readTheme === 'night'){
-                this.state.isDay = false;
+                //
                 // this.setState({isDay:false});
                 this.toggleDayNight();
             }
@@ -112,14 +112,6 @@ class Read extends Component {
         // this.props.mixTocChapters = undefined;
         if(hasSaveBook(this.state.bookId)&&this.state.sourceInvalid){
             this.props.dispatch(getBookShelves());
-        }
-        if(this.state.isDay ===true){
-            saveSettingToRealm({readTheme:'day'})
-        }else{
-            saveSettingToRealm({readTheme:'night'})
-        }
-        if(this.state.textFontSize !== 0){
-            saveSettingToRealm({readTextSize:this.state.textFontSize})
         }
     }
 
@@ -148,6 +140,14 @@ class Read extends Component {
             saveChapterRecordById(this.state.bookId,this.state.currentChapterIndex,this.state.chapters[this.state.currentChapterIndex].link,this.state.chapters[this.state.currentChapterIndex].title);
         }
     }
+
+    _saveSettingToRealm = () =>{
+        if(this.state.isDay === true){
+            saveSettingToRealm({readTextSize:this.state.textFontSize,readTheme:'day'})
+        }else{
+            saveSettingToRealm({readTextSize:this.state.textFontSize,readTheme:'night'})
+        }
+    };
 
     _formatContent = (content) =>{
         let _content = '\u3000\u3000' + content.trim().replace(/\n/g, '\n\u3000\u3000');
@@ -294,21 +294,23 @@ class Read extends Component {
     };
 
     toggleDayNight = () =>{
+        this.state.isDay = !this.state.isDay;
         if(this.state.isDay){
-            this.setState({
-                backgroundColor:theme.css.readForNight.backgroundColor,
-                textColor:theme.css.readForNight.textColor,
-                menuBackGroundColor:theme.css.readForNight.menuBackgroundColor,
-                barStyle:'light-content',
-                isDay:!this.state.isDay})
-        }else{
             this.setState({
                 backgroundColor:theme.css.readForWhite.backgroundColor,
                 textColor:theme.css.readForWhite.textColor,
                 menuBackGroundColor:theme.css.readForWhite.menuBackgroundColor,
                 barStyle:'dark-content',
-                isDay:!this.state.isDay})
+                })
+        }else{
+            this.setState({
+                backgroundColor:theme.css.readForNight.backgroundColor,
+                textColor:theme.css.readForNight.textColor,
+                menuBackGroundColor:theme.css.readForNight.menuBackgroundColor,
+                barStyle:'light-content',
+                })
         }
+        this._saveSettingToRealm();
     };
 
     toggleFontSizeMenuVisible = () =>{
@@ -321,11 +323,15 @@ class Read extends Component {
     };
 
     inFontSize = () =>{
-        this.setState({textFontSize:this.state.textFontSize+2})
+        this.setState({textFontSize:this.state.textFontSize+2});
+        this.state.textFontSize = this.state.textFontSize+2;
+        this._saveSettingToRealm();
     };
 
     deFontSize = () =>{
-        this.setState({textFontSize:this.state.textFontSize-2})
+        this.setState({textFontSize:this.state.textFontSize-2});
+        this.state.textFontSize = this.state.textFontSize-2;
+        this._saveSettingToRealm();
     };
 
     renderChapter = () =>{
