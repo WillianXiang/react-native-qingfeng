@@ -4,6 +4,7 @@
 
 import React, { Component } from 'react'
 import {
+    NetInfo,
     View,
     Image,
     Text,
@@ -33,12 +34,12 @@ class Follow extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            netIsConnected:false,
             bookshelves: [],
             toShow: false,
             focusBook: null,
             mulOperation:false,
             selectedBookIds:[],
-
 
             refreshFlatList:1,
         }
@@ -54,6 +55,13 @@ class Follow extends Component {
             BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
         }
         // this.props.dispatch(getBooksInfo());
+        NetInfo.isConnected.fetch().done(
+            (isConnected) => { this.setState({netIsConnected:isConnected}); }
+        );
+        NetInfo.isConnected.addEventListener(
+            'change',
+            this.connectivityChange
+        );
     }
 
     onBackAndroid = () =>{
@@ -72,6 +80,10 @@ class Follow extends Component {
         if (Platform.OS === 'android') {
             BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
         }
+        NetInfo.isConnected.removeEventListener(
+            'change',
+            this.connectivityChange
+        );
     }
 
     // renderBookshelves(rowData) {
@@ -91,8 +103,20 @@ class Follow extends Component {
     // }
 
     toRead = (bookId) =>{
-        const { navigate } = this.props.navigation;
-        navigate('Read',bookId);
+        if(this.state.netIsConnected){
+            const { navigate } = this.props.navigation;
+            navigate('Read',bookId);
+        }else{
+            this.netIsNotConnect();
+        }
+    };
+
+    netIsNotConnect = () =>{
+        Toast.show("没有网络连接！",{position:Toast.positions.BOTTOM - 55});
+    };
+
+    connectivityChange = (isConnected) => {
+        this.setState({netIsConnected:isConnected});
     };
 
     toMulOperationView = (bookId) =>{

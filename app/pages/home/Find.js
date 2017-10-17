@@ -4,13 +4,10 @@
 
 import React, { Component } from 'react'
 import {
+    NetInfo,
     View,
-    Image,
     Text,
-    StatusBar,
     StyleSheet,
-    Platform,
-    Button,
     FlatList,
     Dimensions,
     ScrollView,
@@ -20,9 +17,10 @@ import {
     Modal,
     PixelRatio
 } from 'react-native'
-import { Icon,List, ListItem } from 'react-native-elements';
+import { Icon, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
+import Toast from 'react-native-root-toast';
 
 import {getRankList} from '../../actions/rank';
 import {getBookList,getCategoryList} from '../../actions/book';
@@ -36,6 +34,7 @@ class Find extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            netIsConnected:false,
             maleGender:true,
             rankModalVisible:false,
             bookLists:[],
@@ -53,6 +52,13 @@ class Find extends Component {
         this.props.dispatch(getRankList());
         this.props.dispatch(getBookList(1));
         this.props.dispatch(getCategoryList());
+        NetInfo.isConnected.fetch().done(
+            (isConnected) => { this.setState({netIsConnected:isConnected}); }
+        );
+        NetInfo.isConnected.addEventListener(
+            'change',
+            this.connectivityChange
+        );
     }
 
     componentWillReceiveProps(nextProps) {
@@ -67,61 +73,104 @@ class Find extends Component {
         }
     }
 
+    componentWillUnmount(){
+        NetInfo.isConnected.removeEventListener(
+            'change',
+            this.connectivityChange
+        );
+    }
+
     nextNavigate = (navigatePage) =>{
-        const { navigate } = this.props.navigation;
-        navigate(navigatePage)
+        if(this.state.netIsConnected){
+            const { navigate } = this.props.navigation;
+            navigate(navigatePage)
+        }else{
+            this.netIsNotConnect();
+        }
     };
 
     toRankDetail = (index) =>{
-        const { navigate } = this.props.navigation;
-        if(typeof(this.props.rankList) !== 'undefined'){
-            if(this.state.maleGender){
-                navigate('RankDetail',this.props.rankList.male[index]);
-            }else{
-                navigate('RankDetail',this.props.rankList.female[index]);
+        if(this.state.netIsConnected){
+            const { navigate } = this.props.navigation;
+            if(typeof(this.props.rankList) !== 'undefined'){
+                if(this.state.maleGender){
+                    navigate('RankDetail',this.props.rankList.male[index]);
+                }else{
+                    navigate('RankDetail',this.props.rankList.female[index]);
+                }
             }
+        }else{
+            this.netIsNotConnect();
         }
     };
 
     toRankDetailByAll = (gender,index) =>{
-        const { navigate } = this.props.navigation;
-        if(typeof(this.props.rankList) !== 'undefined'){
-            this.toggleRankModal();
-            if(gender === 1){
-                navigate('RankDetail',this.props.rankList.male[index]);
-            }else{
-                navigate('RankDetail',this.props.rankList.female[index]);
+        if(this.state.netIsConnected){
+            const { navigate } = this.props.navigation;
+            if(typeof(this.props.rankList) !== 'undefined'){
+                this.toggleRankModal();
+                if(gender === 1){
+                    navigate('RankDetail',this.props.rankList.male[index]);
+                }else{
+                    navigate('RankDetail',this.props.rankList.female[index]);
+                }
             }
+        }else{
+            this.netIsNotConnect();
         }
     };
 
     toBookGroup = () =>{
-        const { navigate } = this.props.navigation;
-        navigate('BookGroup');
+        if(this.state.netIsConnected){
+            const { navigate } = this.props.navigation;
+            navigate('BookGroup');
+        }else{
+            this.netIsNotConnect();
+        }
     };
 
     toBookGroupDetail = (id,groupTitle) =>{
-        const { navigate } = this.props.navigation;
-        navigate('BookGroupDetail',{bookListId:id,bookListTitle:groupTitle});
+        if(this.state.netIsConnected){
+            const { navigate } = this.props.navigation;
+            navigate('BookGroupDetail',{bookListId:id,bookListTitle:groupTitle});
+        }else{
+            this.netIsNotConnect();
+        }
     };
 
     toBookSortDetail  = (index,majorName) =>{
-        const { navigate } = this.props.navigation;
-        if(index === 1){
-            let minsTemp = this.props.categoryListV2.male.filter((item,index)=>{ return item.major == majorName});
-            navigate('BookSortDetail',{major:majorName,mins:minsTemp,gender:'male'});
-        }else if(index === 2){
-            let minsTemp = this.props.categoryListV2.female.filter((item,index)=>{ return item.major == majorName});
-            navigate('BookSortDetail',{major:majorName,mins:minsTemp,gender:'female'});
-        }else if(index === 3){
-            // let minsTemp = this.props.categoryListV2.press.filter((item,index)=>{ return item.major == majorName});
-            navigate('BookSortDetail',{major:majorName,gender:'press'});
+        if(this.state.netIsConnected){
+            const { navigate } = this.props.navigation;
+            if(index === 1){
+                let minsTemp = this.props.categoryListV2.male.filter((item,index)=>{ return item.major == majorName});
+                navigate('BookSortDetail',{major:majorName,mins:minsTemp,gender:'male'});
+            }else if(index === 2){
+                let minsTemp = this.props.categoryListV2.female.filter((item,index)=>{ return item.major == majorName});
+                navigate('BookSortDetail',{major:majorName,mins:minsTemp,gender:'female'});
+            }else if(index === 3){
+                // let minsTemp = this.props.categoryListV2.press.filter((item,index)=>{ return item.major == majorName});
+                navigate('BookSortDetail',{major:majorName,gender:'press'});
+            }
+        }else{
+            this.netIsNotConnect();
         }
     };
 
     toBookSearch = () =>{
-        const { navigate } = this.props.navigation;
-        navigate('BookSearch');
+        if(this.state.netIsConnected){
+            const { navigate } = this.props.navigation;
+            navigate('BookSearch');
+        }else{
+            this.netIsNotConnect();
+        }
+    };
+
+    netIsNotConnect = () =>{
+        Toast.show("没有网络连接！",{position:Toast.positions.BOTTOM - 55});
+    };
+
+    connectivityChange = (isConnected) => {
+        this.setState({netIsConnected:isConnected});
     };
 
     toggleRankModal = () =>{

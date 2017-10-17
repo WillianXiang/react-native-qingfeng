@@ -5,13 +5,6 @@
 import React,{Component} from 'react';
 
 import {
-    View,
-    BackAndroid,
-    Navigator,
-    StatusBar,
-    ScrollView,
-    Button,
-    Text,
     Platform,
 } from 'react-native';
 
@@ -19,7 +12,6 @@ import {
     StackNavigator,
     TabNavigator,
 } from 'react-navigation';
-import {  Icon,ListItem } from 'react-native-elements';
 
 //Home pages
 import Follow from "./pages/home/Follow";
@@ -196,8 +188,6 @@ const AppNavigator = StackNavigator({
     },
     mode: 'card',  // 页面切换模式, 左右是card(相当于iOS中的push效果), 上下是modal(相当于iOS中的modal效果)
     headerMode: 'screen', // 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏
-    onTransitionStart: ()=>{ console.log('导航栏切换开始'); },  // 回调
-    onTransitionEnd: ()=>{ console.log('导航栏切换结束'); }  // 回调
 });
 
 export default AppNavigator;
