@@ -2,25 +2,25 @@
 参考["简阅" 网络小说阅读器](https://github.com/jsntjinjin/simplereader)实现的一个简单的小说阅读软件，其中实现方式略有不同。实现了书籍信息查看和章节阅读，阅读样式简单调整以及书籍的搜索。
 
 ## 介绍
-项目基于ReactNative + Redux的框架开发，暂时只适配了Android，后续将适配iOS。项目中的资源API均来自追书神器，纯属共享学习之用，请勿用于商业
+项目基于ReactNative + Redux的框架开发，暂时只适配了Android，后续将适配iOS(现已适配)。项目中的资源API均来自追书神器，纯属共享学习之用，请勿用于商业
 
 ## TODO
 * [ ] 书籍更新提示
 * [ ] 缓存书籍到本地
 * [ ] 新增更多显示内容（社区讨论内容）
 * [ ] 书籍阅读页面的调整，翻页浏览，并且翻页可以自动下一章
-* [ ] 适配iOS
+* [x] 适配iOS
 
 ## 体验下载
-android下载地址:
+android下载地址:https://github.com/enowsh/react-native-qingfeng/blob/master/imgs/app-release.apk
 
 ## 安装
 
 1. git clone https://github.com/enowsh/react-native-qingfeng.git
-2. cd AwesomeDemo
+2. cd react-native-qingfeng
 3. npm install
 4. react-native link
-5. react-native run-android
+5. react-native run-android/run-ios
 
 * 首页
 
